@@ -1,18 +1,25 @@
 import React, { useEffect, useCallback, useState } from "react";
-import { View, Text, FlatList } from "react-native";
+import { TouchableOpacity, FlatList, Text } from "react-native";
 import PalettePreview from "../components/PalettePreview";
 
 const Home = ({ navigation }) => {
   const [palette, setPalette] = useState([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const fetchPalette = useCallback(async () => {
     let url = "https://color-palette-api.kadikraman.now.sh/palettes";
     let response = await fetch(url);
-    let commits = await response.json();
-    setPalette(commits);
+    let colors = await response.json();
+    setPalette(colors);
   }, []);
 
   useEffect(() => {
     fetchPalette();
+  }, []);
+
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    await fetchPalette();
+    setIsRefreshing(false);
   }, []);
 
   return (
@@ -27,6 +34,19 @@ const Home = ({ navigation }) => {
           colorPalette={item}
         />
       )}
+      refreshing={isRefreshing}
+      onRefresh={() => {
+        handleRefresh();
+      }}
+      ListHeaderComponent={
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("ColorPaletteModal");
+          }}
+        >
+          <Text>Launch Modal</Text>
+        </TouchableOpacity>
+      }
     />
   );
 };
