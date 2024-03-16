@@ -2,7 +2,10 @@ import React, { useEffect, useCallback, useState } from "react";
 import { TouchableOpacity, FlatList, Text } from "react-native";
 import PalettePreview from "../components/PalettePreview";
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
+  const newColorPalette = route.params
+    ? route.params.newColorPalette
+    : undefined;
   const [palette, setPalette] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const fetchPalette = useCallback(async () => {
@@ -21,6 +24,12 @@ const Home = ({ navigation }) => {
     await fetchPalette();
     setIsRefreshing(false);
   }, []);
+
+  useEffect(() => {
+    if (newColorPalette) {
+      setPalette((palette) => [newColorPalette, ...palette]);
+    }
+  }, [newColorPalette]);
 
   return (
     <FlatList

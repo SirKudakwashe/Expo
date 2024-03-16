@@ -19,7 +19,7 @@ const COLORS = [
   { colorName: "Aquamarine", hexCode: "#7FFFD4", index: "4" },
 ];
 
-function ColorPaletteModal() {
+function ColorPaletteModal({ navigation }) {
   const [name, onChangeText] = useState("");
   const [color, setColors] = useState([]);
   const [isEnabled, setIsEnabled] = useState(false);
@@ -27,8 +27,14 @@ function ColorPaletteModal() {
   const handleSubmit = useCallback(() => {
     if (!name) {
       Alert.alert("PLease enter a name");
+    } else {
+      const newColorPalette = {
+        paletteName: name,
+        colors: [],
+      };
+      navigation.navigate("Home", { newColorPalette });
     }
-  }, []);
+  }, [name]);
 
   return (
     <SafeAreaView style={styles.container}>
