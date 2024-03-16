@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
@@ -20,10 +20,15 @@ const COLORS = [
 ];
 
 function ColorPaletteModal() {
-  const [text, onChangeText] = React.useState("");
-  const [color, setColors] = React.useState([]);
-  const [isEnabled, setIsEnabled] = React.useState(false);
+  const [name, onChangeText] = useState("");
+  const [color, setColors] = useState([]);
+  const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const handleSubmit = useCallback(() => {
+    if (!name) {
+      Alert.alert("PLease enter a name");
+    }
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -31,14 +36,13 @@ function ColorPaletteModal() {
         <Text>Name of your color palette</Text>
         <TextInput
           onChangeText={onChangeText}
-          value={text}
-          autoCapitalize="sentences"
+          value={name}
+          placeholder="palette name"
           style={styles.input}
         />
 
         <FlatList
           data={COLORS}
-          keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <View style={styles.list}>
               <Text style={styles.text}>{item.colorName}</Text>
@@ -57,11 +61,9 @@ function ColorPaletteModal() {
           )}
         />
       </View>
-
-      <Button
-        title="Submit"
-        onPress={() => Alert.alert("Simple Button pressed")}
-      />
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -88,6 +90,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderBottomWidth: 1,
     borderRadius: 4,
+  },
+
+  button: {
+    height: 40,
+    backgroundColor: "teal",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
 
