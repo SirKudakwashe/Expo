@@ -44,7 +44,7 @@ const Home = ({ navigation }) => {
             navigation.navigate("ColorPaletteModal");
           }}
         >
-          <Text>Launch Modal</Text>
+          <Text>Add Color Scheme</Text>
         </TouchableOpacity>
       }
     />

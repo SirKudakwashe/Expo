@@ -5,9 +5,8 @@ import ColorBox from "../components/ColorBox";
 const ColorPalette = ({ route }) => {
   const { paletteName, colors } = route.params;
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <FlatList
-        style={styles.container}
         data={colors}
         // keyExtractor={(item) => item}
         renderItem={({ item }) => (
@@ -23,6 +22,7 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 40,
     paddingHorizontal: 10,
+    backgroundColor: "#fff",
   },
 });
 
